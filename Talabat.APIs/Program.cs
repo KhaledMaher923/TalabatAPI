@@ -33,6 +33,7 @@ namespace Talabat.APIs
             {
                 var DbContext = services.GetRequiredService<StoreContext>();
                 await DbContext.Database.MigrateAsync();
+                await StoreContextSeed.SeedAsync(DbContext);
             }
             catch(Exception ex) 
             {
