@@ -1,4 +1,3 @@
-
 using Microsoft.EntityFrameworkCore;
 using Talabat.Repository.Data;
 
@@ -6,7 +5,7 @@ namespace Talabat.APIs
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -23,19 +22,37 @@ namespace Talabat.APIs
 
             var app = builder.Build();
 
+            #region Update-Databsae
+            using var scope = app.Services.CreateScope();
+            // Get the StoreContext instance from the service provider
+            var services = scope.ServiceProvider;
+            // Get the StoreContext instance
+
+            var LoggerFactory = services.GetRequiredService<ILoggerFactory>();
+            try
+            {
+                var DbContext = services.GetRequiredService<StoreContext>();
+                await DbContext.Database.MigrateAsync();
+            }
+            catch(Exception ex) 
+            {
+                var Logger = LoggerFactory.CreateLogger<Program>();
+                Logger.LogError(ex,"An Error Occurred While Migrating the Database.");
+            }
+            #endregion
+
             #region Configure - Configure the HTTP request pipeline
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
 
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
-
             app.MapControllers();
-
             #endregion
 
             app.Run();
