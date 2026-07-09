@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Talabat.APIs.Errors;
+using Talabat.APIs.Extensions;
 using Talabat.APIs.Helpers;
 using Talabat.APIs.Middlewares;
 using Talabat.Core.Entities;
@@ -25,23 +26,8 @@ namespace Talabat.APIs
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            //builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles()));
-            builder.Services.AddAutoMapper(typeof(MappingProfiles));
-            builder.Services.Configure<ApiBehaviorOptions>(Options =>
-            {
-                Options.InvalidModelStateResponseFactory = (actionContext) =>
-                {
-                    var errors = actionContext.ModelState.Where(P => P.Value.Errors.Count > 0)
-                                    .SelectMany(P => P.Value.Errors)
-                                    .Select(E => E.ErrorMessage).ToArray();
-                    var ValidationErrorRespone = new ApiValidationErrorResponse()
-                    {
-                        Errors = errors
-                    };
-                    return new BadRequestObjectResult(ValidationErrorRespone);
-                };
-            });
+            
+            builder.Services.AddApplicationServices();
 
             #endregion
 
@@ -67,12 +53,11 @@ namespace Talabat.APIs
             }
             #endregion
 
-            app.UseMiddleware<ExceptionMiddleWare>();
             #region Configure - Configure the HTTP request pipeline
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseMiddleware<ExceptionMiddleWare>();
+                app.UseSwaggerMiddlewares();
             }
             app.UseStatusCodePagesWithReExecute("errors/{0}");
 

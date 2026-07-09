@@ -19,7 +19,14 @@ namespace Talabat.Core.Specifications
                 Query = Query.Where(Spec.Criteria); 
             }
 
-
+            if(Spec.OrderBy is not null)
+            {
+                Query = Query.OrderBy(Spec.OrderBy);
+            }
+            if(Spec.OrderByDescending is not null)
+            {
+                Query = Query.OrderByDescending(Spec.OrderByDescending);
+            }
 
             Query = Spec.Includes.Aggregate(Query, (CurrentQuery, IncludeExpression) => CurrentQuery.Include(IncludeExpression));
 
