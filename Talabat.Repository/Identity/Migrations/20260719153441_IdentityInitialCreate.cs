@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Talabat.Repository.Identity.Migrations
+namespace Talabat.Repository.Migrations
 {
     /// <inheritdoc />
     public partial class IdentityInitialCreate : Migration
@@ -83,14 +83,14 @@ namespace Talabat.Repository.Identity.Migrations
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Address", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Address_AspNetUsers_AppUserId",
-                        column: x => x.AppUserId,
+                        name: "FK_Address_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -182,9 +182,9 @@ namespace Talabat.Repository.Identity.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Address_AppUserId",
+                name: "IX_Address_ApplicationUserId",
                 table: "Address",
-                column: "AppUserId",
+                column: "ApplicationUserId",
                 unique: true);
 
             migrationBuilder.CreateIndex(

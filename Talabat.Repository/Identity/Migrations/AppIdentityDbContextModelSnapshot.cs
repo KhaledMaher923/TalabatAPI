@@ -8,7 +8,7 @@ using Talabat.Repository.Identity;
 
 #nullable disable
 
-namespace Talabat.Repository.Identity.Migrations
+namespace Talabat.Repository.Migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
     partial class AppIdentityDbContextModelSnapshot : ModelSnapshot
@@ -163,7 +163,7 @@ namespace Talabat.Repository.Identity.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AppUserId")
+                    b.Property<string>("ApplicationUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -189,13 +189,13 @@ namespace Talabat.Repository.Identity.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId")
+                    b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
                     b.ToTable("Address");
                 });
 
-            modelBuilder.Entity("Talabat.Core.Entities.Identity.AppUser", b =>
+            modelBuilder.Entity("Talabat.Core.Entities.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -275,7 +275,7 @@ namespace Talabat.Repository.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Talabat.Core.Entities.Identity.AppUser", null)
+                    b.HasOne("Talabat.Core.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -284,7 +284,7 @@ namespace Talabat.Repository.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Talabat.Core.Entities.Identity.AppUser", null)
+                    b.HasOne("Talabat.Core.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -299,7 +299,7 @@ namespace Talabat.Repository.Identity.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Talabat.Core.Entities.Identity.AppUser", null)
+                    b.HasOne("Talabat.Core.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -308,7 +308,7 @@ namespace Talabat.Repository.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Talabat.Core.Entities.Identity.AppUser", null)
+                    b.HasOne("Talabat.Core.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -317,16 +317,16 @@ namespace Talabat.Repository.Identity.Migrations
 
             modelBuilder.Entity("Talabat.Core.Entities.Identity.Address", b =>
                 {
-                    b.HasOne("Talabat.Core.Entities.Identity.AppUser", "User")
+                    b.HasOne("Talabat.Core.Entities.Identity.ApplicationUser", "User")
                         .WithOne("Address")
-                        .HasForeignKey("Talabat.Core.Entities.Identity.Address", "AppUserId")
+                        .HasForeignKey("Talabat.Core.Entities.Identity.Address", "ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Talabat.Core.Entities.Identity.AppUser", b =>
+            modelBuilder.Entity("Talabat.Core.Entities.Identity.ApplicationUser", b =>
                 {
                     b.Navigation("Address")
                         .IsRequired();
