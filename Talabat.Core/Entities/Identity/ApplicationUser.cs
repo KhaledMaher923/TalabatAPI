@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Talabat.Core.Entities.Identity
 {
-    public class AppUser : IdentityUser
+    public class ApplicationUser : IdentityUser
     {
         public string DisplayName { get; set; }
         public Address Address { get; set; }

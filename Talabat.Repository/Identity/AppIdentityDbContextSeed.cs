@@ -8,11 +8,11 @@ namespace Talabat.Repository.Identity
 {
     public static class AppIdentityDbContextSeed 
     {
-        public static async Task SeedUserAsync(UserManager<AppUser> userManager)
+        public static async Task SeedUserAsync(UserManager<ApplicationUser> userManager)
         {
             if (!userManager.Users.Any())
             {
-                var User = new AppUser()
+                var User = new ApplicationUser()
                 {
                     DisplayName = "Khaled Maher",
                     Email = "khaledmaher.net@gmail.com",

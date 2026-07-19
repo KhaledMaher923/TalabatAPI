@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Talabat.APIs.DTOs;
 using Talabat.APIs.Errors;
+using Talabat.APIs.Extensions;
 using Talabat.Core.Entities.Identity;
 using Talabat.Core.Services;
 
@@ -10,24 +14,27 @@ namespace Talabat.APIs.Controllers
 {
     public class AccountsController : APIBaseController
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ITokenService _tokenService;
+        private readonly IMapper _mapper;
 
-        public AccountsController(UserManager<AppUser> userManager
-            , SignInManager<AppUser> signInManager
+        public AccountsController(UserManager<ApplicationUser> userManager
+            , SignInManager<ApplicationUser> signInManager
             , ITokenService tokenService
+            ,IMapper mapper
             )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
+            _mapper = mapper;
         }
 
         [HttpPost("Register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto model)
         {
-            var User = new AppUser()
+            var User = new ApplicationUser()
             {
                 DisplayName = model.DisplayName,
                 Email = model.Email,
@@ -66,7 +73,32 @@ namespace Talabat.APIs.Controllers
 
         }
 
+        [Authorize]
+        [HttpGet("GetCurrentUser")]
+        public async Task<ActionResult<UserDto>> GetUCurrentUser()
+        {
+            var Email = User.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(Email);
+            var ReturnedObject = new UserDto
+            {
+                DisplayName = user.DisplayName,
+                Email = user.Email,
+                Token = await _tokenService.CreateTokenAsync(user, _userManager)
+            };
 
+            return Ok(ReturnedObject);
+        }
+
+        [Authorize]
+        [HttpGet("Address")]
+        public async Task<ActionResult<AddressDto>> GetCurrentUserAddress()
+        {
+            var user = await _userManager.FindUserWithAddressAsync(User);
+
+            var MappedAddress = _mapper.Map<Address, AddressDto>(user.Address);
+
+            return Ok(MappedAddress);
+        }
 
 
     }

@@ -15,7 +15,7 @@ namespace Talabat.APIs.Extensions
         {
             Services.AddScoped<ITokenService, TokenService>();
 
-            Services.AddIdentity<AppUser, IdentityRole>()
+            Services.AddIdentity<ApplicationUser, IdentityRole>()
                             .AddEntityFrameworkStores<AppIdentityDbContext>();
 
             Services.AddAuthentication(Options =>

@@ -19,7 +19,7 @@ namespace Talabat.Service
         {
             this.configuration = configuration;
         }
-        public async Task<string> CreateTokenAsync(AppUser User, UserManager<AppUser> userManager)
+        public async Task<string> CreateTokenAsync(ApplicationUser User, UserManager<ApplicationUser> userManager)
         {
             var AuthClaims = new List<Claim>()
             {
