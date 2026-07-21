@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using Talabat.Core.Entities;
+using Talabat.Core.Entities.Order_Aggregate;
 using Talabat.Repository.Data.Configurations;
 
 namespace Talabat.Repository.Data
@@ -24,6 +25,9 @@ namespace Talabat.Repository.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<ProductBrand> ProductBrands { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
 
 
     }
