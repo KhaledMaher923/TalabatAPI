@@ -2,6 +2,7 @@
 using Talabat.APIs.DTOs;
 using Talabat.Core.Entities;
 using Talabat.Core.Entities.Identity;
+using Talabat.Core.Entities.Order_Aggregate;
 
 namespace Talabat.APIs.Helpers
 {
@@ -14,9 +15,10 @@ namespace Talabat.APIs.Helpers
                 .ForMember(d=> d.ProductBrand, o=>o.MapFrom(s=>s.ProductBrand.Name))
                 .ForMember(d=> d.PictureUrl, o=>o.MapFrom<ProductPictureUrlResolver>());
 
-            CreateMap<Address, AddressDto>().ReverseMap();
+            CreateMap<Core.Entities.Identity.Address, AddressDto>();
             CreateMap<CustomerBasketDto, CustomerBasket>();
             CreateMap<BasketItemDto, BasketItem>();
+            CreateMap<AddressDto, Core.Entities.Order_Aggregate.Address>();
         
         }
     }
